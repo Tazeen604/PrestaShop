@@ -26,6 +26,7 @@
 use PrestaShop\PrestaShop\Adapter\ServiceLocator;
 use PrestaShopBundle\Translation\TranslatorComponent;
 
+
 abstract class ObjectModelCore implements \PrestaShop\PrestaShop\Core\Foundation\Database\EntityInterface
 {
     /**
@@ -158,6 +159,8 @@ abstract class ObjectModelCore implements \PrestaShop\PrestaShop\Core\Foundation
 
     /** @var TranslatorComponent */
     protected $translator;
+/** Displaying error messages */
+protected $_errorFormatList = [];
 
     /**
      * @var array Contains object definition
@@ -1083,7 +1086,7 @@ abstract class ObjectModelCore implements \PrestaShop\PrestaShop\Core\Foundation
             $message = $this->validateField($field, $this->$field);
             if ($message !== true) {
                 if ($die) {
-                    throw new PrestaShopException($message);
+                    $this->_errorFormatList[] = $this->trans('Data is incomplete,Please select correct configuration from backend office or check your data');
                 }
 
                 return $error_return ? $message : false;
